@@ -14,11 +14,7 @@ const TodoListContainer = () => {
     {
       id: 1,
       title: 'Todo 1',
-      category: {
-        key: 'STUDY',
-        text: 'Study',
-        icon: <InlineIcon color="#FBA948" width="20" icon={flaskIcon} />,
-      },
+      category: 'SPORT',
       date: '28.11.2019',
       hour: '23:59',
       completed: false,
@@ -26,11 +22,7 @@ const TodoListContainer = () => {
     {
       id: 2,
       title: 'Todo 2',
-      category: {
-        key: 'WORK',
-        text: 'Work',
-        icon: <InlineIcon color="#37FC7A" width="20" icon={bagIcon} />,
-      },
+      category: 'SPORT',
       date: '26.11.2019',
       hour: '23:59',
       completed: false,
@@ -38,11 +30,7 @@ const TodoListContainer = () => {
     {
       id: 4,
       title: 'Todo 2',
-      category: {
-        key: 'STUDY',
-        text: 'Study',
-        icon: <InlineIcon color="#FBA948" width="20" icon={flaskIcon} />,
-      },
+      category: 'WORK',
       date: '26.11.2019',
       hour: '23:59',
       completed: false,
@@ -50,11 +38,7 @@ const TodoListContainer = () => {
     {
       id: 5,
       title: 'Todo 2',
-      category: {
-        key: 'SPORT',
-        text: 'Sport',
-        icon: <InlineIcon color="#758EEE" width="20" icon={trophyIcon} />,
-      },
+      category: 'STUDY',
       date: '26.11.2019',
       hour: '23:59',
       completed: false,
@@ -62,53 +46,49 @@ const TodoListContainer = () => {
     {
       id: 3,
       title: 'Todo 3',
-      category: {
-        key: 'STUDY',
-        text: 'Study',
-        icon: <InlineIcon color="#FBA948" width="20" icon={flaskIcon} />,
-      },
+      category: 'WORK',
       date: '27.11.2019',
       hour: '23:59',
       completed: false,
     },
   ];
 
-  const categories = [
-    {
+  const categories = {
+    ALL: {
       key: 'ALL',
       text: 'ALL',
       icon: <InlineIcon color="#48496B" width="20" icon={listUl} />,
     },
-    {
+    STUDY: {
       key: 'STUDY',
       text: 'Study',
       icon: <InlineIcon color="#FBA948" width="20" icon={flaskIcon} />,
     },
-    {
+    SPORT: {
       key: 'SPORT',
       text: 'Sport',
       icon: <InlineIcon color="#758EEE" width="20" icon={trophyIcon} />,
     },
-    {
+    WORK: {
       key: 'WORK',
       text: 'Work',
       icon: <InlineIcon color="#37FC7A" width="20" icon={bagIcon} />,
     },
-  ];
+  };
 
   const [activeCategory, setActiveCategory] = useState('ALL');
   const [todayItems, setTodayItems] = useState([]);
   const [tomorrowItems, setTomorrowItems] = useState([]);
 
   const renderCategories = () => {
-    return categories.map(category => (
+    return Object.keys(categories).map(category => (
       <div
-        key={category.key}
-        className={`item ${activeCategory === category.key ? 'active' : ''}`}
-        onClick={() => getByCategory(category.key)}
+        key={categories[category].key}
+        className={`item ${activeCategory === categories[category].key ? 'active' : ''}`}
+        onClick={() => getByCategory(categories[category].key)}
       >
-        {category.icon}
-        <span className="text">{category.text}</span>
+        {categories[category].icon}
+        <span className="text">{categories[category].text}</span>
       </div>
     ));
   };
@@ -117,7 +97,7 @@ const TodoListContainer = () => {
     setActiveCategory(category);
     let activeItemsByCategory = items;
     if (category !== 'ALL') {
-      activeItemsByCategory = items.filter(item => item.category.key === category);
+      activeItemsByCategory = items.filter(item => categories[item.category].key === category);
     }
     const todayItemsByCategory = activeItemsByCategory.filter(
       item => item.date === new Date().toLocaleDateString(),
@@ -153,8 +133,8 @@ const TodoListContainer = () => {
               </span>
             </div>
             <div className="category">
-              {item.category.icon}
-              <span className="text">{item.category.text}</span>
+              {categories[item.category].icon}
+              <span className="text">{categories[item.category].text}</span>
             </div>
           </div>
         </div>
