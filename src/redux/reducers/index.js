@@ -1,9 +1,8 @@
-import reduceReducers from 'reduce-reducers';
+import { combineReducers } from 'redux';
 
-import InitialState from './initialState';
 import TodoReducer from './todoReducer';
-import StorageReducer from './storageReducer';
+import FilterReducer from './filterReducer';
 
-const AppReducer = reduceReducers(InitialState, StorageReducer, TodoReducer);
+const AppReducer = combineReducers({ todos: TodoReducer, filter: FilterReducer });
 
 export default AppReducer;

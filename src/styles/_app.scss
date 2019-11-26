@@ -5,6 +5,8 @@
   padding: 55px 20px;
   box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
   overflow: hidden;
+  border-radius: 5px;
+  position: relative;
   .title {
     text-align: center;
     margin-bottom: 40px;
@@ -61,6 +63,14 @@
       border-radius: 5px;
       background-color: $appLightBg;
       display: flex;
+      transition: all 0.3s ease;
+      &.complated {
+        background-color: #26263a;
+        color: #6d6d6d;
+        a {
+          color: #6d6d6d;
+        }
+      }
       &.empty {
         min-height: 90px;
         justify-content: center;
@@ -173,12 +183,70 @@
       border-radius: 50%;
       transition: all 0.3s ease;
       background: rgb(254, 199, 86);
-      background: -moz-linear-gradient(-45deg, rgba(254, 199, 86, 1) 0%, rgba(251, 112, 154, 1) 100%);
-      background: -webkit-linear-gradient(-45deg, rgba(254, 199, 86, 1) 0%, rgba(251, 112, 154, 1) 100%);
+      background: -moz-linear-gradient(
+        -45deg,
+        rgba(254, 199, 86, 1) 0%,
+        rgba(251, 112, 154, 1) 100%
+      );
+      background: -webkit-linear-gradient(
+        -45deg,
+        rgba(254, 199, 86, 1) 0%,
+        rgba(251, 112, 154, 1) 100%
+      );
       background: linear-gradient(135deg, rgba(254, 199, 86, 1) 0%, rgba(251, 112, 154, 1) 100%);
       &:hover {
         box-shadow: 0 5px 15px rgba(145, 92, 182, 0.4);
       }
     }
+  }
+  .confirm {
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 300px;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .title {
+      color: #000;
+      font-size: 16px;
+    }
+    .icon {
+      margin-bottom: 20px;
+    }
+    button {
+      font-family: $nunito;
+      width: 100px;
+      height: 40px;
+      border: none;
+      outline: none;
+      color: #fff;
+      cursor: pointer;
+      border-radius: 5px;
+      &.btn-close {
+        background-color: $buttonBg;
+      }
+      &.btn-danger {
+        background-color: $dangerColor;
+      }
+    }
+    button:first-child {
+      margin-right: 15px;
+    }
+  }
+  .backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(48, 40, 64, 0.6);
   }
 }

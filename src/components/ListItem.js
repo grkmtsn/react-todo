@@ -13,9 +13,15 @@ import { format } from 'date-fns';
 import { categories } from '@/helpers/constants';
 
 const ListItem = ({ todo, setSelectedTodo, handleToggleTodo }) => (
-  <div className="list-item">
+  <div className={`list-item ${todo.completed ? 'complated' : ''}`}>
     <div className="checkbox-area">
-      <input type="checkbox" id={todo.id} className="checkbox" checked={todo.completed} onClick={() => handleToggleTodo(todo)} />
+      <input
+        type="checkbox"
+        id={todo.id}
+        className="checkbox"
+        defaultChecked={todo.completed}
+        onClick={() => handleToggleTodo(todo)}
+      />
       <label htmlFor={todo.id} className="check-label">
         <svg width="18px" height="18px" viewBox="0 0 18 18">
           <path d="M1,9 L1,3.5 C1,2 2,1 3.5,1 L14.5,1 C16,1 17,2 17,3.5 L17,14.5 C17,16 16,17 14.5,17 L3.5,17 C2,17 1,16 1,14.5 L1,9 Z"></path>
@@ -26,7 +32,12 @@ const ListItem = ({ todo, setSelectedTodo, handleToggleTodo }) => (
     <div className="description">
       <div className="header">
         <Link to="/task">
-          <label className={`${todo.completed ? 'complated' : ''}`} onClick={() => setSelectedTodo(todo.id)}>{todo.title}</label>
+          <label
+            className={`${todo.completed ? 'complated' : ''}`}
+            onClick={() => setSelectedTodo(todo.id)}
+          >
+            {todo.title}
+          </label>
         </Link>
       </div>
       <div className="extra">
