@@ -8,6 +8,12 @@
   .title {
     text-align: center;
     margin-bottom: 40px;
+    position: relative;
+    .btn-back {
+      position: absolute;
+      top: -11px;
+      left: 0;
+    }
   }
   .categories {
     margin-bottom: 30px;
@@ -17,7 +23,7 @@
     flex-wrap: nowrap;
     .item {
       border-radius: 5px;
-      padding: 16px 10px;
+      padding: 15px 15px;
       text-align: center;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -33,6 +39,9 @@
       .text {
         margin-left: 15px;
       }
+    }
+    &.select {
+      justify-content: space-between;
     }
   }
   .content {
@@ -70,8 +79,16 @@
           font-weight: $bold;
           margin-bottom: 15px;
           label {
+            line-height: 0;
             font-size: 18px;
             cursor: pointer;
+            transition: all 0.3s ease;
+            &:hover {
+              color: $activeColor;
+            }
+            &.complated {
+              text-decoration: line-through;
+            }
           }
         }
         .extra {
@@ -90,6 +107,62 @@
       }
     }
   }
+  .textarea {
+    textarea {
+      width: 100%;
+      height: 200px;
+      padding: 16px;
+      background-color: transparent;
+      border: none;
+      color: $defaultTextColor;
+      font-size: 18px;
+      font-family: $nunito;
+      resize: none;
+      border: 1px solid $activeColor;
+      border-radius: 5px;
+      &:focus {
+        outline: none !important;
+      }
+    }
+  }
+  .date-fields {
+    display: flex;
+    justify-content: space-between;
+    input {
+      font-family: $nunito;
+      font-size: 18px;
+      padding: 15px;
+      border-radius: 5px;
+      border: 1px dashed $activeColor;
+      color: $defaultTextColor;
+      outline: none;
+      background-color: transparent;
+    }
+  }
+  .btn-add {
+    width: 100%;
+    height: 60px;
+    background-color: $buttonBg;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    font-size: 16px;
+    color: $defaultTextColor;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    &:hover {
+      background-color: $buttonHoverColor;
+    }
+  }
+  .btn-delete {
+    position: absolute;
+    top: -1px;
+    right: 10px;
+    cursor: pointer;
+    background-color: transparent;
+    outline: none;
+    border: none;
+  }
   .footer {
     display: flex;
     justify-content: center;
@@ -100,16 +173,8 @@
       border-radius: 50%;
       transition: all 0.3s ease;
       background: rgb(254, 199, 86);
-      background: -moz-linear-gradient(
-        -45deg,
-        rgba(254, 199, 86, 1) 0%,
-        rgba(251, 112, 154, 1) 100%
-      );
-      background: -webkit-linear-gradient(
-        -45deg,
-        rgba(254, 199, 86, 1) 0%,
-        rgba(251, 112, 154, 1) 100%
-      );
+      background: -moz-linear-gradient(-45deg, rgba(254, 199, 86, 1) 0%, rgba(251, 112, 154, 1) 100%);
+      background: -webkit-linear-gradient(-45deg, rgba(254, 199, 86, 1) 0%, rgba(251, 112, 154, 1) 100%);
       background: linear-gradient(135deg, rgba(254, 199, 86, 1) 0%, rgba(251, 112, 154, 1) 100%);
       &:hover {
         box-shadow: 0 5px 15px rgba(145, 92, 182, 0.4);

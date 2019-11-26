@@ -1,14 +1,140 @@
-import React from 'react';
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import React, { useState } from 'react';
+import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { InlineIcon } from '@iconify/react';
+import angleLeft from '@iconify/icons-uil/angle-left';
+import trashAlt from '@iconify/icons-uil/trash-alt';
+import { categories } from '@/helpers/constants';
+import { AddTodo, EditTodo, DeleteTodo } from '@/redux/actions';
+import { isEmpty } from '@/helpers/storage';
 
-const TodoActionContainer = () => {
+const TodoActionContainer = (props) => {
+  const { selectedTodo } = props;
+  const [error, setError] = useState(false);
+  const [category, setCategory] = useState(!isEmpty(selectedTodo) ? selectedTodo.category : categories.STUDY.key);
+  const [values, setValues] = useState(!isEmpty(selectedTodo) ?
+    {
+      title: selectedTodo.title,
+      date: selectedTodo.date,
+      hour: selectedTodo.hour
+    } : {
+      title: '',
+      date: new Date().toISOString().substr(0, 10),
+      hour: `${new Date().getHours()}:${new Date().getMinutes()}`
+    });
+
+  const handleInputChange = e => {
+    const { name, value } = e.target
+    setValues({ ...values, [name]: value })
+  }
+
+  const handleSubmit = () => {
+    const { handleAddTodo, handleEditTodo, history } = props;
+    const isValid = validateTitle(values.title);
+    if (isValid) {
+      if (isEmpty(selectedTodo)) {
+        const body = {
+          title: values.title,
+          category,
+          date: values.date,
+          hour: values.hour
+        }
+        handleAddTodo(body);
+      } else {
+        const modifiedTodo = {
+          ...selectedTodo,
+          title: values.title,
+          category,
+          date: values.date,
+          hour: values.hour
+        }
+        handleEditTodo(modifiedTodo)
+      }
+      history.goBack();
+    } else {
+      setError(true);
+    }
+  }
+
+  const handleDelete = () => {
+    const { selectedTodo: { id }, handleDeleteTodo } = props;
+    handleDeleteTodo(id);
+  }
+
+  const renderCategories = () => {
+    return Object.keys(categories).map(key => {
+      if (categories[key].key !== 'ALL') {
+        return (
+          <div
+            key={categories[key].key}
+            className={`item ${category === categories[key].key ? 'active' : ''}`}
+            onClick={() => setCategory(categories[key].key)}
+          >
+            {categories[key].icon}
+            <span className="text">{categories[key].text}</span>
+          </div>
+        )
+      }
+      return null;
+    })
+  }
+
+  const validateTitle = value => {
+    return value.trim() !== ''
+  }
+
   return (
-    <div className="">
-      <div>Title</div>
-      <div>Textarea</div>
-      <div>choose cat</div>
-      <div>setDate</div>
+    <div className="app-wrapper">
+      <div className="title">
+        <Link to="/">
+          <InlineIcon color="#FFF" width="50" icon={angleLeft} className="btn-back" />
+        </Link>
+        <h2>{!isEmpty(selectedTodo) ? 'EDIT TODO' : 'NEW TODO'}</h2>
+        {!isEmpty(selectedTodo) && <button className="btn-delete" type="button" onClick={handleDelete}>
+          <InlineIcon color="#ff7a7a" width="30" icon={trashAlt} />
+        </button>}
+      </div>
+      <div className="form-group">
+        <div className="form-label">
+          <span>Description</span>
+        </div>
+        <div className="textarea">
+          <textarea rows="3" value={values.title} name="title" onChange={handleInputChange} />
+        </div>
+        {error && <div className="error-field">Description is required</div>}
+      </div>
+      <div className="form-group">
+        <div className="form-label">
+          <span>Choose a category</span>
+        </div>
+        <div className="categories select">
+          {renderCategories()}
+        </div>
+      </div>
+      <div className="form-group">
+        <div className="form-label">
+          <span>Choose a date and hour</span>
+        </div>
+        <div className="date-fields">
+          <input type="date" name="date" value={values.date} onChange={handleInputChange} />
+          <input type="time" name="hour" value={values.hour} onChange={handleInputChange} />
+        </div>
+      </div>
+      <button className="btn-add" onClick={handleSubmit}>{!isEmpty(selectedTodo) ? 'SAVE TODO' : 'ADD TODO'}</button>
     </div>
   );
 };
 
-export { TodoActionContainer };
+const mapStateToProps = state => ({
+  selectedTodo: state.selectedTodo,
+});
+
+const mapDispatchToProps = {
+  handleAddTodo: AddTodo,
+  handleEditTodo: EditTodo,
+  handleDeleteTodo: DeleteTodo
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(TodoActionContainer));
