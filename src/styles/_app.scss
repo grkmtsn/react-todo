@@ -174,6 +174,7 @@
     border: none;
   }
   .footer {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -183,16 +184,8 @@
       border-radius: 50%;
       transition: all 0.3s ease;
       background: rgb(254, 199, 86);
-      background: -moz-linear-gradient(
-        -45deg,
-        rgba(254, 199, 86, 1) 0%,
-        rgba(251, 112, 154, 1) 100%
-      );
-      background: -webkit-linear-gradient(
-        -45deg,
-        rgba(254, 199, 86, 1) 0%,
-        rgba(251, 112, 154, 1) 100%
-      );
+      background: -moz-linear-gradient(-45deg, rgba(254, 199, 86, 1) 0%, rgba(251, 112, 154, 1) 100%);
+      background: -webkit-linear-gradient(-45deg, rgba(254, 199, 86, 1) 0%, rgba(251, 112, 154, 1) 100%);
       background: linear-gradient(135deg, rgba(254, 199, 86, 1) 0%, rgba(251, 112, 154, 1) 100%);
       &:hover {
         box-shadow: 0 5px 15px rgba(145, 92, 182, 0.4);

@@ -12,7 +12,7 @@ import { InlineIcon } from '@iconify/react';
 import plusIcon from '@iconify/icons-uil/plus';
 import annoyedAlt from '@iconify/icons-uil/annoyed-alt';
 
-import { ListItem, CategoryList } from '@/components';
+import { ListItem, CategoryList, Tooltip } from '@/components';
 import { categories } from '@/helpers/constants';
 
 import { SelectEditTodo, ToggleTodo, ClearSelectedTodo, SetCategoryFilter } from '@/redux/actions';
@@ -94,6 +94,7 @@ class TodoListContainer extends Component {
           </div>
         </div>
         <div className="footer">
+          {todos.length === 0 && <Tooltip className="tooltip" content="There is nothing todo! Add Now!" />}
           <Link to="/task">
             <InlineIcon color="#10101E" width="30" icon={plusIcon} />
           </Link>

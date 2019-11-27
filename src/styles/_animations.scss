@@ -1,0 +1,14 @@
+@keyframes scale-and-rotate {
+  0% {
+    transform: scale(0) rotate(0);
+  }
+  50% {
+    transform: scale(0.5) rotate(10deg);
+  }
+  75% {
+    transform: scale(0.75) rotate(-10deg);
+  }
+  100% {
+    ransform: scale(1) rotate(0);
+  }
+}

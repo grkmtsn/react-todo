@@ -10,29 +10,28 @@ import commentExclamation from '@iconify/icons-uil/comment-exclamation';
 
 import { categories } from '@/helpers/constants';
 import { AddTodo, EditTodo, DeleteTodo } from '@/redux/actions';
-import { isEmpty } from '@/helpers/storage';
+import { isEmpty, checkTime, validateForm } from '@/helpers/utils';
 
 const TodoActionContainer = props => {
   const { selectedTodo } = props;
   const [visible, setVisible] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState({});
   const [category, setCategory] = useState(
     !isEmpty(selectedTodo) ? selectedTodo.category : categories.STUDY.key,
   );
   const [values, setValues] = useState(
     !isEmpty(selectedTodo)
       ? {
-          title: selectedTodo.title,
-          date: selectedTodo.date,
-          hour: selectedTodo.hour,
-        }
+        title: selectedTodo.title,
+        date: selectedTodo.date,
+        hour: selectedTodo.hour,
+      }
       : {
-          title: '',
-          date: new Date().toISOString().substr(0, 10),
-          hour: `${new Date().getHours()}:${new Date().getMinutes()}`,
-        },
+        title: '',
+        date: new Date().toISOString().substr(0, 10),
+        hour: `${checkTime(new Date().getHours())}:${checkTime(new Date().getMinutes())}`,
+      },
   );
-
   const handleInputChange = e => {
     const { name, value } = e.target;
     setValues({ ...values, [name]: value });
@@ -40,9 +39,10 @@ const TodoActionContainer = props => {
 
   const handleSubmit = () => {
     const { handleAddTodo, handleEditTodo, history } = props;
-    const isValid = validateTitle(values.title);
-    if (isValid) {
+    const errors = validateForm(values);
+    if (isEmpty(errors)) {
       if (isEmpty(selectedTodo)) {
+        // Add New Todo
         const body = {
           title: values.title,
           category,
@@ -51,6 +51,7 @@ const TodoActionContainer = props => {
         };
         handleAddTodo(body);
       } else {
+        // Edit Todo
         const modifiedTodo = {
           ...selectedTodo,
           title: values.title,
@@ -62,7 +63,7 @@ const TodoActionContainer = props => {
       }
       history.goBack();
     } else {
-      setError(true);
+      setError(errors);
     }
   };
 
@@ -94,6 +95,15 @@ const TodoActionContainer = props => {
     });
   };
 
+  const onConfirm = () => {
+    setVisible(false);
+    handleDelete();
+  };
+
+  const closeConfirm = () => {
+    setVisible(false);
+  };
+
   const renderConfirm = () => (
     <div>
       <div className="backdrop" onClick={closeConfirm}></div>
@@ -111,19 +121,6 @@ const TodoActionContainer = props => {
       </div>
     </div>
   );
-
-  const onConfirm = () => {
-    setVisible(false);
-    handleDelete();
-  };
-
-  const closeConfirm = () => {
-    setVisible(false);
-  };
-
-  const validateTitle = value => {
-    return value.trim() !== '';
-  };
 
   return (
     <div className="app-wrapper">
@@ -151,7 +148,7 @@ const TodoActionContainer = props => {
         <div className="textarea">
           <textarea rows="3" value={values.title} name="title" onChange={handleInputChange} />
         </div>
-        {error && <div className="error-field">Description is required</div>}
+        {error.title && <div className="error-field">Description is required</div>}
       </div>
       <div className="form-group">
         <div className="form-label">
@@ -167,6 +164,7 @@ const TodoActionContainer = props => {
           <input type="date" name="date" value={values.date} onChange={handleInputChange} />
           <input type="time" name="hour" value={values.hour} onChange={handleInputChange} />
         </div>
+        {(error.date || error.hour) && <div className="error-field">Invalid date or hour</div>}
       </div>
       <button type="button" className="btn-add" onClick={handleSubmit}>
         {!isEmpty(selectedTodo) ? 'SAVE TODO' : 'ADD TODO'}
