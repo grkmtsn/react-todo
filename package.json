@@ -8,6 +8,18 @@
     "build:prod": "webpack -p --mode production",
     "start": "webpack-dev-server --hot --mode development"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx}": [
+      "eslint",
+      "pretty-quick --staged",
+      "git add"
+    ]
+  },
   "dependencies": {
     "@iconify/icons-uil": "^1.0.5",
     "@iconify/react": "^1.1.1",
@@ -41,8 +53,10 @@
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-react": "^7.12.4",
     "extract-text-webpack-plugin": "^3.0.2",
+    "lint-staged": "^9.4.0",
     "html-webpack-plugin": "^3.2.0",
     "html-webpack-template": "^6.2.0",
+    "husky": "^3.0.7",
     "file-loader": "^4.2.0",
     "css-loader": "^3.2.0",
     "sass-loader": "^8.0.0",
